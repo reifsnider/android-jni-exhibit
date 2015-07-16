@@ -6,11 +6,14 @@
 #include "hellodefs.h"
 
 // generic logging interface class that helps abstract logging functions so that
-// code can be portable between Android and iOS or another system
+// code can be portable between Android and iOS or another system ... could also have
+// put the code in different C source files and then linked in only the one relevant to
+// our platform
 
 #undef LOG_TAG
 #define LOG_TAG "logutils"
 
+// ANDROID is defined by the Android compiler on our behalf ... could also have used gradle cflags
 #ifdef ANDROID
 
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)

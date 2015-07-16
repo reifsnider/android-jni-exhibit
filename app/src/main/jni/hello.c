@@ -24,7 +24,20 @@ static char gpStringBuf[STRING_BUFFER_LENGTH];
 // get a message about the platform we compiled for
 void getPlatformMessage(char *pBuffer) {
 
-    LOGD("Test integer value: %d", TEST_INTEGER);
+    // demo of logging ... both ANDROID and __ANDROID__ are in fact defined when
+    // building with Android Studio and NDK ... ANDROID is from NDK, __ANDROID__ is from gcc
+#if defined(ANDROID)
+    // will be printed out on Android device when built with Android Studio and NDK
+    LOGD("ANDROID is defined");
+#endif
+
+#if defined(__ANDROID__)
+    // will also be printed out on Android device when built with Android Studio and NDK
+    LOGD("__ANDROID__ is defined");
+#endif
+
+    // get a platform message to be shown onscreen in the app, to show some platform-specfic #defines,
+    // and to provide a message we can pass back up into Java as a newly instantiated Java String
 
     char platformBuf[80];
 
@@ -221,5 +234,6 @@ static void destroy_nothingAtAll() {
     // as well as the clang iOS compiler - this code is run when the shared library
     // is unloaded
 
-  // we have no such work to do so it's a no-op that we include to show it's possible
+   // we have no such work to do so it's a no-op that we include to show it's possible
+
 }
