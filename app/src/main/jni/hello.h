@@ -23,4 +23,7 @@ void retrieveTinyString(char *pStringUtf8);
 // clear/initialize the stored string
 void clearTinyString();
 
+// demo for pthreads that works on Android and iOS
+void pthreadDemo();
+
 #endif  // ifndef HELLO_H

@@ -94,3 +94,10 @@ jstring Java_com_example_hellojni_HelloJniNative_retrieveTinyString(JNIEnv* env,
     return returnValue;
 
 }
+
+// demo of pthreads, which work on Android and iOS
+void Java_com_example_hellojni_HelloJniNative_pthreadDemo(JNIEnv* env, jobject thiz) {
+
+    pthreadDemo();
+
+}

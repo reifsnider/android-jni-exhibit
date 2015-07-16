@@ -3,8 +3,10 @@
 
 #include "hello.h"
 
-#include <string.h>     // for strlen
-#include <stdio.h>      // for sprintf, which is not in string.h ...
+#include <string.h>             // for strlen
+#include <stdio.h>              // for sprintf, which is not in string.h ...
+#include <pthread.h>            // for pthreads
+#include <unistd.h>             // int16_t and other standardized types
 
 #include "logutils.h"
 
@@ -123,6 +125,70 @@ void retrieveTinyString(char *pStringUtf8) {
 void clearTinyString() {
 
     sprintf(gpStringBuf, "");
+}
+
+// task to be run on an individual thread in our pthread demo function
+void *pthreadDemoTask(void *pThreadIndex) {
+
+    int16_t threadIndex = (intptr_t)pThreadIndex;
+
+    intptr_t result = threadIndex*2;
+
+    pthread_exit((void*) result);
+
+}
+
+// demonstrate pthreads, which work fine on Android and on iOS
+#define THREAD_COUNT (4)
+void pthreadDemo() {
+
+    pthread_t thread[THREAD_COUNT];
+    intptr_t threadArg[THREAD_COUNT];
+    // configuration of the pthreads, most importantly that they are joinable
+    pthread_attr_t attr;
+
+    // pthread calls return code
+    int rc;
+    // pthread join status
+    void *status;
+
+    /* Initialize and set thread detached attribute */
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+    int16_t whichThread;
+
+    for (whichThread = 0; whichThread < THREAD_COUNT; whichThread++) {
+
+        threadArg[whichThread] = whichThread;
+
+        rc = pthread_create(&thread[whichThread], &attr, pthreadDemoTask, (void *)threadArg[whichThread]);
+        if (rc) {
+            LOGE("ERROR; return code from pthread_create() is %d\n", rc);
+            exit(-1);
+        }
+
+    }
+
+    // done with this, need to clean up
+    pthread_attr_destroy(&attr);
+
+    // could wait on them all at the same time, but we won't proceed until all finish
+    for (whichThread = 0; whichThread < THREAD_COUNT; whichThread++) {
+
+        rc = pthread_join(thread[whichThread], &status);
+
+        if (rc) {
+
+            LOGE("ERROR; return code from pthread_join() is %d\n", rc);
+            exit(-1);
+        }
+
+        // can print intptr_t as integer with %d after assigning from pointer
+        LOGD("Thread %d completed with value %d", whichThread, status);
+
+    }
+
 }
 
 __attribute__((constructor))

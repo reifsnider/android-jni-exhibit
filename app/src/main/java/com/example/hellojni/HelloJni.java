@@ -41,6 +41,11 @@ public class HelloJni extends Activity
         // if we'd instantiated them in Java
         String stringAllocatedByJNI = HelloJniNative.stringFromJNI();
 
+        // pthreads work fine on both iOS and Android
+        HelloJniNative.pthreadDemo();
+
+        // demonstrate storing and retrieving a string from JNI in separate calls -
+        // persistence of information in the C code
         String storeThis = "Test string to store in the C library.";
         String uninitializedString = HelloJniNative.retrieveTinyString();
 

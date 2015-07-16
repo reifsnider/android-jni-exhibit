@@ -18,6 +18,9 @@ public class HelloJniNative {
      * get an empty string */
     public static native String retrieveTinyString();
 
+    /** demonstrate C's pthreads working fine on Android */
+    public static native void pthreadDemo();
+
     static {
 
         // you must load your JNI library before you use it, generally this is done
