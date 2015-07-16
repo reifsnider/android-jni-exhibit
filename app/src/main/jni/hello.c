@@ -7,6 +7,8 @@
 #include <stdio.h>              // for sprintf, which is not in string.h ...
 #include <pthread.h>            // for pthreads
 #include <unistd.h>             // int16_t and other standardized types
+#include <stdlib.h>             // for exit()
+
 
 #include "logutils.h"
 
@@ -124,7 +126,8 @@ void retrieveTinyString(char *pStringUtf8) {
 // clear/initialize the stored string
 void clearTinyString() {
 
-    sprintf(gpStringBuf, "");
+    gpStringBuf[0] = '\0';
+
 }
 
 // task to be run on an individual thread in our pthread demo function
@@ -184,8 +187,7 @@ void pthreadDemo() {
             exit(-1);
         }
 
-        // can print intptr_t as integer with %d after assigning from pointer
-        LOGD("Thread %d completed with value %d", whichThread, status);
+        LOGD("Thread %d completed with value %p", whichThread, status);
 
     }
 

@@ -55,15 +55,6 @@ Java_com_example_hellojni_HelloJniNative_stringFromJNI( JNIEnv* env, jobject thi
 
 }
 
-// store a string (must be < 80 chars) in our string buf - it's global so will persist
-void storeTinyString(char *pStringUtf8);
-
-// retrieve stored string
-void retrieveTinyString(char *pStringUtf8);
-
-// clear/initialize the stored string
-void clearTinyString();
-
 // store a small string into the C library for later retrieval
 void Java_com_example_hellojni_HelloJniNative_storeTinyString(JNIEnv* env, jobject thiz, jstring storeMe) {
 
